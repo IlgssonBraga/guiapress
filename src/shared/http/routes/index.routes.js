@@ -10,9 +10,24 @@ routes.use("/admin", adminRouter);
 routes.use("/articles", articlesRouter);
 
 routes.get("/", (req, res) => {
-  Article.findAll().then((articles) => {
+  Article.findAll({
+    order: [["id", "DESC"]],
+  }).then((articles) => {
     res.render("index.ejs", { articles });
   });
+});
+
+routes.get("/:slug", (req, res) => {
+  const slug = req.params.slug;
+  Article.findOne({ where: { slug } })
+    .then((article) => {
+      if (article) {
+        res.render("article", { article });
+      } else {
+        res.redirect("/");
+      }
+    })
+    .catch((e) => res.redirect("/"));
 });
 
 export default routes;
