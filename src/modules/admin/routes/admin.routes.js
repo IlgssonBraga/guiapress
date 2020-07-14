@@ -58,4 +58,8 @@ adminRouter.get("/articles/new", (req, res) => {
     res.render("admin/articles/new.ejs", { categories });
   });
 });
+
+adminRouter.get("/articles", (req, res) => {
+  res.send("Articles");
+});
 export default adminRouter;

@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import path from "path";
 import connection from "../config/database";
 import routes from "./routes/index.routes";
+// import Category from "../../modules/categories/app/models/Category";
 import Article from "../../modules/articles/app/models/Article";
-import Category from "../../modules/categories/app/models/Category";
 
 const app = express();
 
