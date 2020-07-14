@@ -17,4 +17,20 @@ articlesRouter.post("/save", (req, res) => {
   });
 });
 
+articlesRouter.post("/delete", (req, res) => {
+  const id = req.body.id;
+
+  if (id) {
+    if (!isNaN(id)) {
+      Article.destroy({ where: { id } }).then(() =>
+        res.redirect("/admin/articles")
+      );
+    } else {
+      res.redirect("/admin/articles");
+    }
+  } else {
+    res.redirect("/admin/articles");
+  }
+});
+
 export default articlesRouter;
