@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Category from "../../categories/app/models/Category";
+import Article from "../../articles/app/models/Article";
 
 const adminRouter = Router();
 
@@ -60,6 +61,9 @@ adminRouter.get("/articles/new", (req, res) => {
 });
 
 adminRouter.get("/articles", (req, res) => {
-  res.send("Articles");
+  Article.findAll().then((articles) => {
+    console.log(articles);
+    res.render("admin/articles/index.ejs", { articles });
+  });
 });
 export default adminRouter;
