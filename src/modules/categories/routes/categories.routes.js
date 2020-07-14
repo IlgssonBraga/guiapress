@@ -13,7 +13,7 @@ categoriesRouter.post("/save", (req, res) => {
     res.redirect("/admin/categories/new");
   } else {
     Category.create({ title, slug: slugify(title) }).then(() =>
-      res.redirect("/")
+      res.redirect("/admin/categories/")
     );
   }
 });

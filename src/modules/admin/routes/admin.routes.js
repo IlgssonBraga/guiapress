@@ -32,4 +32,24 @@ adminRouter.get("/categories", (req, res) => {
     res.render("admin/categories/index.ejs", { categories });
   });
 });
+
+adminRouter.get("/categories/edit/:id", (req, res) => {
+  const id = req.params.id;
+
+  if (isNaN(id)) {
+    res.redirect("/admin/categories");
+  }
+
+  Category.findByPk(id)
+    .then((category) => {
+      if (category) {
+        res.render("admin/categories/edit.ejs", { category });
+      } else {
+        res.redirect("/admin/categories");
+      }
+    })
+    .catch((e) => {
+      res.redirect("/admin/categories");
+    });
+});
 export default adminRouter;
