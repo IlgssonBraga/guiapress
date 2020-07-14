@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import connection from "../../../../shared/config/database";
+import Category from "../../../categories/app/models/Category";
 
 const Article = connection.define("articles", {
   title: {
@@ -15,5 +16,10 @@ const Article = connection.define("articles", {
     allowNull: false,
   },
 });
+
+Category.hasMany(Article);
+Article.belongsTo(Category);
+
+// Article.sync({ force: true });
 
 export default Article;
