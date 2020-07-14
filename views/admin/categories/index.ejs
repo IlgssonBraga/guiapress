@@ -31,6 +31,7 @@ include('../../partials/navbar.ejs') %>
             method="POST"
             action="/admin/categories/delete"
             style="display: inline;"
+            onsubmit="confirmDel(event, this)"
           >
             <input type="hidden" name="id" value="<%= category.id %>" />
             <button class="btn btn-danger">Excluir</button>
@@ -43,3 +44,13 @@ include('../../partials/navbar.ejs') %>
 </div>
 
 <%- include('../../partials/scripts.ejs') %>
+<script>
+  const confirmDel = (event, form) => {
+    event.preventDefault();
+    const decision = confirm("Você quer deletar essa categoria?");
+    if (decision) {
+      form.submit();
+    } else {
+    }
+  };
+</script>
