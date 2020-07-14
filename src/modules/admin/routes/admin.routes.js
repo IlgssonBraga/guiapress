@@ -61,7 +61,9 @@ adminRouter.get("/articles/new", (req, res) => {
 });
 
 adminRouter.get("/articles", (req, res) => {
-  Article.findAll().then((articles) => {
+  Article.findAll({
+    include: [{ model: Category }],
+  }).then((articles) => {
     console.log(articles);
     res.render("admin/articles/index.ejs", { articles });
   });

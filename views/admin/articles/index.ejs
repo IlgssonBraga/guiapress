@@ -23,7 +23,7 @@ include('../../partials/navbar.ejs') %>
         <th><%= article.id %></th>
         <th><%= article.title %></th>
         <th><%= article.slug %></th>
-        <th><%= article.categoryId %></th>
+        <th><%= article.category.title %></th>
         <th>Ações</th>
       </tr>
       <%}) %>
