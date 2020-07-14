@@ -18,4 +18,13 @@ categoriesRouter.post("/save", (req, res) => {
   }
 });
 
+categoriesRouter.post("/update", (req, res) => {
+  const { id, title } = req.body;
+  Category.update({ title, slug: slugify(title) }, { where: { id } }).then(
+    () => {
+      res.redirect("/admin/categories");
+    }
+  );
+});
+
 export default categoriesRouter;
