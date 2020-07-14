@@ -54,6 +54,8 @@ adminRouter.get("/categories/edit/:id", (req, res) => {
 });
 
 adminRouter.get("/articles/new", (req, res) => {
-  res.render("admin/articles/new.ejs");
+  Category.findAll().then((categories) => {
+    res.render("admin/articles/new.ejs", { categories });
+  });
 });
 export default adminRouter;
