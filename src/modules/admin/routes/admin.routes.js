@@ -52,4 +52,8 @@ adminRouter.get("/categories/edit/:id", (req, res) => {
       res.redirect("/admin/categories");
     });
 });
+
+adminRouter.get("/articles/new", (req, res) => {
+  res.render("admin/articles/new.ejs");
+});
 export default adminRouter;
