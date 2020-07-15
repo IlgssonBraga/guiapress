@@ -3,6 +3,7 @@ import categoriesRouter from "../../../modules/categories/routes/categories.rout
 import articlesRouter from "../../../modules/articles/routes/articles.routes";
 import adminRouter from "../../../modules/admin/routes/admin.routes";
 import Article from "../../../modules/articles/app/models/Article";
+import Category from "../../../modules/categories/app/models/Category";
 const routes = Router();
 
 routes.use("/categories", categoriesRouter);
@@ -13,7 +14,9 @@ routes.get("/", (req, res) => {
   Article.findAll({
     order: [["id", "DESC"]],
   }).then((articles) => {
-    res.render("index.ejs", { articles });
+    Category.findAll().then((categories) => {
+      res.render("index.ejs", { articles, categories });
+    });
   });
 });
 
@@ -22,7 +25,9 @@ routes.get("/:slug", (req, res) => {
   Article.findOne({ where: { slug } })
     .then((article) => {
       if (article) {
-        res.render("article", { article });
+        Category.findAll().then((categories) => {
+          res.render("article", { article, categories });
+        });
       } else {
         res.redirect("/");
       }
