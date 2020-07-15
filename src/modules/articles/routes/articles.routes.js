@@ -52,4 +52,32 @@ articlesRouter.post("/update", (req, res) => {
     .catch(() => res.redirect("/"));
 });
 
+articlesRouter.get("/page/:page", (req, res) => {
+  const page = req.params.page;
+  var offset = 0;
+
+  if (isNaN(page) || page == 1) {
+    offset = 0;
+  } else {
+    offset = (parseInt(page) - 1) * 4;
+  }
+
+  Article.findAndCountAll({ limit: 4, offset }).then((articles) => {
+    let next;
+
+    if (offset + 4 >= articles.count) {
+      next = false;
+    } else {
+      next = true;
+    }
+
+    const result = {
+      next,
+      articles,
+    };
+
+    res.json(result);
+  });
+});
+
 export default articlesRouter;
