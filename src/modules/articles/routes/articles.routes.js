@@ -33,4 +33,23 @@ articlesRouter.post("/delete", (req, res) => {
   }
 });
 
+articlesRouter.post("/update", (req, res) => {
+  const { id, title, body, category } = req.body;
+
+  Article.update(
+    {
+      id,
+      title,
+      body,
+      categoryId: category,
+      slug: slugify(title),
+    },
+    { where: { id } }
+  )
+    .then(() => {
+      res.redirect("/admin/articles");
+    })
+    .catch(() => res.redirect("/"));
+});
+
 export default articlesRouter;

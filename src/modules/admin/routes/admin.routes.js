@@ -68,4 +68,20 @@ adminRouter.get("/articles", (req, res) => {
     res.render("admin/articles/index.ejs", { articles });
   });
 });
+
+adminRouter.get("/articles/edit/:id", (req, res) => {
+  const id = req.params.id;
+
+  Article.findByPk(id)
+    .then((article) => {
+      if (article) {
+        Category.findAll().then((categories) => {
+          res.render("admin/articles/edit.ejs", { categories, article });
+        });
+      } else {
+        res.redirect("/admin/articles");
+      }
+    })
+    .catch(() => res.redirect("/admin/articles"));
+});
 export default adminRouter;
