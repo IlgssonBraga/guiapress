@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Category from "../../categories/app/models/Category";
 import Article from "../../articles/app/models/Article";
+import User from "../../admin/app/models/User";
 
 const adminRouter = Router();
 
@@ -83,5 +84,9 @@ adminRouter.get("/articles/edit/:id", (req, res) => {
       }
     })
     .catch(() => res.redirect("/admin/articles"));
+});
+
+adminRouter.get("/users", (req, res) => {
+  res.render("admin/users/create.ejs");
 });
 export default adminRouter;
