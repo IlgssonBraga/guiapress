@@ -45,8 +45,8 @@ Now, clone this repo, install all dependencies and run the server:
 ```
 $ git clone https://github.com/IlgssonBraga/guiapress.git
 $ cd guiapress
-[redis-cache]$ npm install
-[redis-cache]$ npm run dev
+[guiapress]$ npm install
+[guiapress]$ npm run dev
 ```
 
 Now, enjoy!!! :rocket::rocket:
