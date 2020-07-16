@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import session from "express-session";
 import path from "path";
 import connection from "../config/database";
 import routes from "./routes/index.routes";
@@ -10,6 +11,13 @@ import User from "../../modules/admin/app/models/User";
 const app = express();
 
 app.set("view engine", "ejs");
+
+app.use(
+  session({
+    secret: "teste",
+    cookie: { maxAge: 30000000000000000 },
+  })
+);
 
 app.use(express.static(path.resolve(__dirname, "..", "..", "..", "public")));
 

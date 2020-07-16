@@ -3,6 +3,7 @@ import Category from "../../categories/app/models/Category";
 import Article from "../../articles/app/models/Article";
 import User from "../../admin/app/models/User";
 import bcrypt from "bcryptjs";
+import adminAuth from "../../../shared/http/middlewares/adminAuth";
 
 const adminRouter = Router();
 
@@ -10,11 +11,11 @@ adminRouter.get("/", (req, res) => {
   res.send("Admin");
 });
 
-adminRouter.get("/categories/new", (req, res) => {
+adminRouter.get("/categories/new", adminAuth, (req, res) => {
   res.render("admin/categories/new.ejs");
 });
 
-adminRouter.post("/categories/delete", (req, res) => {
+adminRouter.post("/categories/delete", adminAuth, (req, res) => {
   const id = req.body.id;
 
   if (id) {
@@ -30,13 +31,13 @@ adminRouter.post("/categories/delete", (req, res) => {
   }
 });
 
-adminRouter.get("/categories", (req, res) => {
+adminRouter.get("/categories", adminAuth, (req, res) => {
   Category.findAll().then((categories) => {
     res.render("admin/categories/index.ejs", { categories });
   });
 });
 
-adminRouter.get("/categories/edit/:id", (req, res) => {
+adminRouter.get("/categories/edit/:id", adminAuth, (req, res) => {
   const id = req.params.id;
 
   if (isNaN(id)) {
@@ -56,13 +57,13 @@ adminRouter.get("/categories/edit/:id", (req, res) => {
     });
 });
 
-adminRouter.get("/articles/new", (req, res) => {
+adminRouter.get("/articles/new", adminAuth, (req, res) => {
   Category.findAll().then((categories) => {
     res.render("admin/articles/new.ejs", { categories });
   });
 });
 
-adminRouter.get("/articles", (req, res) => {
+adminRouter.get("/articles", adminAuth, (req, res) => {
   Article.findAll({
     include: [{ model: Category }],
   }).then((articles) => {
@@ -71,7 +72,7 @@ adminRouter.get("/articles", (req, res) => {
   });
 });
 
-adminRouter.get("/articles/edit/:id", (req, res) => {
+adminRouter.get("/articles/edit/:id", adminAuth, (req, res) => {
   const id = req.params.id;
 
   Article.findByPk(id)
@@ -87,11 +88,11 @@ adminRouter.get("/articles/edit/:id", (req, res) => {
     .catch(() => res.redirect("/admin/articles"));
 });
 
-adminRouter.get("/users/create", (req, res) => {
+adminRouter.get("/users/create", adminAuth, (req, res) => {
   res.render("admin/users/create.ejs");
 });
 
-adminRouter.post("/users/create", (req, res) => {
+adminRouter.post("/users/create", adminAuth, (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ where: { email } }).then((user) => {
@@ -109,10 +110,41 @@ adminRouter.post("/users/create", (req, res) => {
   });
 });
 
-adminRouter.get("/users", (req, res) => {
+adminRouter.get("/users", adminAuth, (req, res) => {
   User.findAll().then((users) => {
     res.render("admin/users/index.ejs", { users });
   });
+});
+
+adminRouter.get("/login", (req, res) => {
+  res.render("admin/users/login.ejs");
+});
+
+adminRouter.post("/authenticate", (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ where: { email } }).then((user) => {
+    if (user) {
+      const correct = bcrypt.compareSync(password, user.password);
+      if (correct) {
+        req.session.user = {
+          id: user.id,
+          email: user.email,
+        };
+
+        res.redirect("/admin/articles");
+      } else {
+        res.redirect("/admin/login");
+      }
+    } else {
+      res.redirect("/admin/login");
+    }
+  });
+});
+
+adminRouter.get("/logout", (req, res) => {
+  req.session.user = undefined;
+  res.redirect("/");
 });
 
 export default adminRouter;

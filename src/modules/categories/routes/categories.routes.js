@@ -3,12 +3,13 @@ import Category from "../app/models/Category";
 import slugify from "slugify";
 import Article from "../../articles/app/models/Article";
 const categoriesRouter = Router();
+import adminAuth from "../../../shared/http/middlewares/adminAuth";
 
 categoriesRouter.get("/", (req, res) => {
   res.send("Categories");
 });
 
-categoriesRouter.post("/save", (req, res) => {
+categoriesRouter.post("/save", adminAuth, (req, res) => {
   const title = req.body.title;
   if (!title) {
     res.redirect("/admin/categories/new");
@@ -19,7 +20,7 @@ categoriesRouter.post("/save", (req, res) => {
   }
 });
 
-categoriesRouter.post("/update", (req, res) => {
+categoriesRouter.post("/update", adminAuth, (req, res) => {
   const { id, title } = req.body;
   Category.update({ title, slug: slugify(title) }, { where: { id } }).then(
     () => {

@@ -2,10 +2,11 @@ import { Router } from "express";
 import Article from "../app/models/Article";
 import slugify from "slugify";
 import Category from "../../categories/app/models/Category";
+import adminAuth from "../../../shared/http/middlewares/adminAuth";
 
 const articlesRouter = Router();
 
-articlesRouter.post("/save", (req, res) => {
+articlesRouter.post("/save", adminAuth, (req, res) => {
   const { title, body, category } = req.body;
 
   Article.create({
@@ -18,7 +19,7 @@ articlesRouter.post("/save", (req, res) => {
   });
 });
 
-articlesRouter.post("/delete", (req, res) => {
+articlesRouter.post("/delete", adminAuth, (req, res) => {
   const id = req.body.id;
 
   if (id) {
@@ -34,7 +35,7 @@ articlesRouter.post("/delete", (req, res) => {
   }
 });
 
-articlesRouter.post("/update", (req, res) => {
+articlesRouter.post("/update", adminAuth, (req, res) => {
   const { id, title, body, category } = req.body;
 
   Article.update(
