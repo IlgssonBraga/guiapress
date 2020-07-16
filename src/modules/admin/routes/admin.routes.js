@@ -94,14 +94,19 @@ adminRouter.get("/users/create", (req, res) => {
 adminRouter.post("/users/create", (req, res) => {
   const { email, password } = req.body;
 
-  const salt = bcrypt.genSaltSync(10);
-  const hashPassword = bcrypt.hashSync(password, salt);
-
-  User.create({ email, password: hashPassword })
-    .then(() => {
+  User.findOne({ where: { email } }).then((user) => {
+    if (!user) {
+      const salt = bcrypt.genSaltSync(10);
+      const hashPassword = bcrypt.hashSync(password, salt);
+      User.create({ email, password: hashPassword })
+        .then(() => {
+          res.redirect("/admin/users");
+        })
+        .catch((e) => res.redirect("/admin"));
+    } else {
       res.redirect("/admin/users");
-    })
-    .catch((e) => res.redirect("/admin"));
+    }
+  });
 });
 
 export default adminRouter;
