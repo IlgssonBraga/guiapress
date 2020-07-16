@@ -1,0 +1,56 @@
+<%- include('../../partials/header.ejs') %> <%-
+include('../../partials/navbar.ejs') %>
+
+<div class="container">
+  <br />
+  <h2>Categorias</h2>
+  <a href="/admin/categories/new" class="btn btn-success"
+    >Criar nova categoria</a
+  >
+  <hr />
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>E-mail</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+      <tr>
+        <th><%= user.id %></th>
+        <th><%= user.email %></th>
+        <th>
+          <a href="/admin/users/edit/<%= user.id %> " class="btn btn-warning"
+            >Editar</a
+          >
+
+          <form
+            method="POST"
+            action="/admin/categories/delete"
+            style="display: inline;"
+            onsubmit="confirmDel(event, this)"
+          >
+            <input type="hidden" name="id" value="<%= user.id %>" />
+            <button class="btn btn-danger">Excluir</button>
+          </form>
+        </th>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../../partials/scripts.ejs') %>
+<script>
+  const confirmDel = (event, form) => {
+    event.preventDefault();
+    const decision = confirm("Você quer deletar essa categoria?");
+    if (decision) {
+      form.submit();
+    } else {
+    }
+  };
+</script>

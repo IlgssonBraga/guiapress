@@ -109,4 +109,10 @@ adminRouter.post("/users/create", (req, res) => {
   });
 });
 
+adminRouter.get("/users", (req, res) => {
+  User.findAll().then((users) => {
+    res.render("admin/users/index.ejs", { users });
+  });
+});
+
 export default adminRouter;
