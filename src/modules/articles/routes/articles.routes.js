@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Article from "../app/models/Article";
 import slugify from "slugify";
+import Category from "../../categories/app/models/Category";
 
 const articlesRouter = Router();
 
@@ -76,7 +77,11 @@ articlesRouter.get("/page/:page", (req, res) => {
       articles,
     };
 
-    res.json(result);
+    console.log(result.articles.rows);
+
+    Category.findAll().then((categories) => {
+      res.render("admin/articles/page.ejs", { result, categories });
+    });
   });
 });
 
