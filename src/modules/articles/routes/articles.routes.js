@@ -74,6 +74,7 @@ articlesRouter.get("/page/:page", (req, res) => {
       }
 
       const result = {
+        page: parseInt(page),
         next,
         articles,
       };
