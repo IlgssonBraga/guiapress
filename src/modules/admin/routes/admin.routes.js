@@ -86,7 +86,14 @@ adminRouter.get("/articles/edit/:id", (req, res) => {
     .catch(() => res.redirect("/admin/articles"));
 });
 
-adminRouter.get("/users", (req, res) => {
+adminRouter.get("/users/create", (req, res) => {
   res.render("admin/users/create.ejs");
 });
+
+adminRouter.post("/users/create", (req, res) => {
+  const { email, password } = req.body;
+
+  res.json({ email, password });
+});
+
 export default adminRouter;
